@@ -102,7 +102,7 @@ const ClientPortal = () => {
       <div className="mb-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold">Client Portal</h1>
+            <h1 className="text-2xl font-bold">Client Events</h1>
             <p className="text-muted-foreground">Welcome back, Smith Family</p>
           </div>
           <Button>

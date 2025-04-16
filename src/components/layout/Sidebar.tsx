@@ -6,12 +6,12 @@ import {
   Home, 
   Users, 
   Image, 
-  Calculator, 
   LineChart, 
   ChevronLeft, 
   ChevronRight, 
   Menu,
-  X
+  X,
+  MessageCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,9 +21,9 @@ const navItems = [
   { name: "Vendors", href: "/vendors", icon: Users },
   { name: "Events", href: "/events", icon: Calendar },
   { name: "Gallery", href: "/gallery", icon: Image },
-  { name: "Calculator", href: "/calculator", icon: Calculator },
   { name: "Reports", href: "/reports", icon: LineChart },
-  { name: "Client Portal", href: "/client", icon: Users },
+  { name: "Client Events", href: "/client", icon: Users },
+  { name: "Chat", href: "/chat", icon: MessageCircle },
 ];
 
 const Sidebar = () => {
