@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import ClientEventCard from "@/components/client/ClientEventCard";
+import ClientChatWidget from "@/components/client/ClientChatWidget";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -262,6 +263,9 @@ const ClientPortal = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* Add the chat widget */}
+      <ClientChatWidget />
     </MainLayout>
   );
 };
