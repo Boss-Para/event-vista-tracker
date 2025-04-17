@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import VendorCard from "@/components/vendors/VendorCard";
@@ -103,10 +104,12 @@ const Vendors = () => {
     
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(vendor.type);
     
+    // Fix: Check if availableDates exists before calling .some()
     const matchesDate = !selectedDate || 
-      vendor.availableDates.some(date => 
-        date.toDateString() === selectedDate.toDateString()
-      );
+      (vendor.availableDates && 
+       vendor.availableDates.some(date => 
+         date.toDateString() === selectedDate.toDateString()
+       ));
 
     return matchesSearch && matchesType && matchesDate;
   });
