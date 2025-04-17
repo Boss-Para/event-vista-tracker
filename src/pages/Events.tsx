@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import NewEventDialog from "@/components/events/NewEventDialog";
 
 // Mock data for events
 const mockEvents = [
@@ -172,18 +172,7 @@ const Events = () => {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
             <Input className="pl-8" placeholder="Search events..." />
           </div>
-          <Button 
-            variant="outline" 
-            size="icon"
-            onClick={() => setOccasionFilter(occasionFilter === "wedding" ? null : "wedding")}
-            className={occasionFilter === "wedding" ? "bg-pink-100" : ""}
-          >
-            <Calendar className={`h-4 w-4 ${occasionFilter === "wedding" ? "text-pink-700" : ""}`} />
-          </Button>
-          <Button>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            New Event
-          </Button>
+          <NewEventDialog />
         </div>
       </div>
 
