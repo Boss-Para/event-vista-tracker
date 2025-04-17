@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,14 +13,18 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add actual authentication logic
+    // This is a simple mock login. In a real app, you'd want to use a proper auth system
     if (email && password) {
+      localStorage.setItem("isAuthenticated", "true");
+      toast.success("Successfully logged in!");
       navigate("/");
+    } else {
+      toast.error("Please fill in all fields");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
           <div className="w-12 h-12 rounded-full bg-event mx-auto flex items-center justify-center">
