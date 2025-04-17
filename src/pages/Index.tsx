@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import StatCard from "@/components/dashboard/StatCard";
 import EventProgress from "@/components/dashboard/EventProgress";
 import VendorOverview from "@/components/dashboard/VendorOverview";
 import EventGalleryPreview from "@/components/dashboard/EventGalleryPreview";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, DollarSign, CalendarClock } from "lucide-react";
+import { Calendar, Users, DollarSign, CalendarClock, Store, Image, PieChart, MessageSquare } from "lucide-react";
 
 // Mock data for dashboard
 const upcomingEvents = [
@@ -107,11 +108,35 @@ const galleryImages = [
 ];
 
 const Index = () => {
+  const navigationButtons = [
+    { name: "Vendors", icon: Store, path: "/vendors" },
+    { name: "Events", icon: Calendar, path: "/events" },
+    { name: "Gallery", icon: Image, path: "/gallery" },
+    { name: "Reports", icon: PieChart, path: "/reports" },
+    { name: "Chat", icon: MessageSquare, path: "/chat" },
+  ];
+
   return (
     <MainLayout>
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">Welcome back to Event Vista</p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        {navigationButtons.map((button) => (
+          <Button
+            key={button.name}
+            variant="outline"
+            className="h-24 flex-col gap-2 hover:bg-accent"
+            asChild
+          >
+            <Link to={button.path}>
+              <button.icon className="h-6 w-6" />
+              {button.name}
+            </Link>
+          </Button>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
