@@ -2,8 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Phone, Mail, CheckCircle2 } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface VendorCardProps {
@@ -14,11 +13,6 @@ interface VendorCardProps {
     type: string;
     phone: string;
     email: string;
-    progress: number;
-    tasks: {
-      completed: number;
-      total: number;
-    };
     status: "available" | "busy" | "unavailable";
   };
 }
@@ -65,16 +59,6 @@ const VendorCard = ({ vendor }: VendorCardProps) => {
             <Mail className="h-4 w-4 text-muted-foreground" />
             <span>{vendor.email}</span>
           </div>
-        </div>
-
-        <div className="mt-4">
-          <div className="flex items-center justify-between mb-1">
-            <div className="text-sm font-medium">Task Progress</div>
-            <div className="text-sm font-medium">
-              {vendor.tasks.completed}/{vendor.tasks.total}
-            </div>
-          </div>
-          <Progress value={vendor.progress} className="h-2" />
         </div>
       </CardContent>
       <CardFooter className="border-t px-6 py-4">

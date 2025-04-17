@@ -1,9 +1,15 @@
-
+import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import VendorCard from "@/components/vendors/VendorCard";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Mock data for vendors
 const mockVendors = [
@@ -76,17 +82,57 @@ const mockVendors = [
 ];
 
 const Vendors = () => {
+  const [search, setSearch] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
+  const vendorTypes = Array.from(new Set(mockVendors.map(vendor => vendor.type)));
+
+  const filteredVendors = mockVendors.filter(vendor => {
+    const matchesSearch = vendor.name.toLowerCase().includes(search.toLowerCase()) ||
+                         vendor.type.toLowerCase().includes(search.toLowerCase()) ||
+                         vendor.email.toLowerCase().includes(search.toLowerCase());
+    const matchesType = selectedTypes.length === 0 || selectedTypes.includes(vendor.type);
+    return matchesSearch && matchesType;
+  });
+
+  const toggleType = (type: string) => {
+    setSelectedTypes(prev =>
+      prev.includes(type)
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
+
   return (
     <MainLayout>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-2xl font-bold">Vendors</h1>
         <div className="flex items-center gap-2">
           <div className="relative w-full md:w-64">
-            <Input placeholder="Search vendors..." />
+            <Input 
+              placeholder="Search vendors..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
-          <Button variant="outline" size="icon">
-            <Filter className="h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Filter className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              {vendorTypes.map((type) => (
+                <DropdownMenuCheckboxItem
+                  key={type}
+                  checked={selectedTypes.includes(type)}
+                  onCheckedChange={() => toggleType(type)}
+                >
+                  {type}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button>
             <PlusCircle className="h-4 w-4 mr-2" />
             Add Vendor
@@ -95,7 +141,7 @@ const Vendors = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockVendors.map((vendor) => (
+        {filteredVendors.map((vendor) => (
           <VendorCard key={vendor.id} vendor={vendor} />
         ))}
       </div>
