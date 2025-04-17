@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import VendorCard from "@/components/vendors/VendorCard";
+import VendorCalendar from "@/components/vendors/VendorCalendar";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// Mock data for vendors
+// Mock data for vendors with availability dates
 const mockVendors = [
   {
     id: "1",
@@ -20,9 +21,12 @@ const mockVendors = [
     type: "Decoration",
     phone: "(555) 123-4567",
     email: "info@elegantdecor.com",
-    progress: 75,
-    tasks: { completed: 3, total: 4 },
-    status: "busy" as const,
+    status: "available" as const,
+    availableDates: [
+      new Date("2025-04-17"),
+      new Date("2025-04-18"),
+      new Date("2025-04-19"),
+    ],
   },
   {
     id: "2",
@@ -31,9 +35,12 @@ const mockVendors = [
     type: "Catering",
     phone: "(555) 234-5678",
     email: "contact@gourmetcatering.com",
-    progress: 100,
-    tasks: { completed: 5, total: 5 },
     status: "available" as const,
+    availableDates: [
+      new Date("2025-04-18"),
+      new Date("2025-04-19"),
+      new Date("2025-04-20"),
+    ],
   },
   {
     id: "3",
@@ -84,15 +91,24 @@ const mockVendors = [
 const Vendors = () => {
   const [search, setSearch] = useState("");
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const vendorTypes = Array.from(new Set(mockVendors.map(vendor => vendor.type)));
 
   const filteredVendors = mockVendors.filter(vendor => {
-    const matchesSearch = vendor.name.toLowerCase().includes(search.toLowerCase()) ||
-                         vendor.type.toLowerCase().includes(search.toLowerCase()) ||
-                         vendor.email.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = 
+      vendor.name.toLowerCase().includes(search.toLowerCase()) ||
+      vendor.type.toLowerCase().includes(search.toLowerCase()) ||
+      vendor.email.toLowerCase().includes(search.toLowerCase());
+    
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(vendor.type);
-    return matchesSearch && matchesType;
+    
+    const matchesDate = !selectedDate || 
+      vendor.availableDates.some(date => 
+        date.toDateString() === selectedDate.toDateString()
+      );
+
+    return matchesSearch && matchesType && matchesDate;
   });
 
   const toggleType = (type: string) => {
@@ -107,7 +123,7 @@ const Vendors = () => {
     <MainLayout>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-2xl font-bold">Vendors</h1>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="relative w-full md:w-64">
             <Input 
               placeholder="Search vendors..." 
@@ -115,6 +131,10 @@ const Vendors = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <VendorCalendar
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">

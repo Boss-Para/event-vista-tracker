@@ -14,6 +14,7 @@ interface VendorCardProps {
     phone: string;
     email: string;
     status: "available" | "busy" | "unavailable";
+    availableDates?: Date[];
   };
 }
 
