@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +14,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import ServiceVendorSelect from "./ServiceVendorSelect";
 
 // Event type options
 const eventTypes = [
@@ -49,6 +49,7 @@ const saveTheDateSchema = z.object({
 const NewEventDialog = () => {
   const [open, setOpen] = useState(false);
   const [eventType, setEventType] = useState("");
+  const [serviceVendors, setServiceVendors] = useState<Record<string, string[]>>({});
 
   // Initialize form with react-hook-form
   const form = useForm<z.infer<typeof saveTheDateSchema>>({
@@ -66,10 +67,15 @@ const NewEventDialog = () => {
   });
 
   const onSubmit = (data: z.infer<typeof saveTheDateSchema>) => {
-    console.log("Form data:", { eventType, ...data });
+    console.log("Form data:", {
+      eventType,
+      ...data,
+      vendors: serviceVendors,
+    });
     toast.success("Event created successfully!");
     setOpen(false);
     form.reset();
+    setServiceVendors({});
   };
 
   return (
@@ -113,20 +119,6 @@ const NewEventDialog = () => {
                 <TabsContent value="details" className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="eventName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Event Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter event name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
                     name="client"
                     render={({ field }) => (
                       <FormItem>
@@ -138,7 +130,6 @@ const NewEventDialog = () => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="date"
@@ -153,7 +144,6 @@ const NewEventDialog = () => {
                       </FormItem>
                     )}
                   />
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
@@ -171,7 +161,6 @@ const NewEventDialog = () => {
                         </FormItem>
                       )}
                     />
-                    
                     <FormField
                       control={form.control}
                       name="theme"
@@ -189,7 +178,6 @@ const NewEventDialog = () => {
                       )}
                     />
                   </div>
-
                   <FormField
                     control={form.control}
                     name="location"
@@ -203,7 +191,6 @@ const NewEventDialog = () => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="budget"
@@ -217,7 +204,6 @@ const NewEventDialog = () => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="description"
@@ -232,7 +218,6 @@ const NewEventDialog = () => {
                     )}
                   />
                 </TabsContent>
-
                 <TabsContent value="services" className="space-y-4">
                   <div className="space-y-4">
                     <h3 className="font-medium text-lg">Select Required Services</h3>
@@ -243,31 +228,37 @@ const NewEventDialog = () => {
                           control={form.control}
                           name="services"
                           render={({ field }) => {
+                            const checked = field.value?.includes(service.id);
                             return (
-                              <FormItem key={service.id} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(service.id)}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([...field.value || [], service.id])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== service.id
-                                            )
-                                          );
-                                    }}
-                                  />
-                                </FormControl>
-                                <div className="space-y-1 leading-none">
+                              <FormItem key={service.id} className="flex flex-col border rounded-md p-4 mb-4">
+                                <div className="flex flex-row items-center space-x-3">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={checked}
+                                      onCheckedChange={(checkedVal) => {
+                                        if (checkedVal) {
+                                          field.onChange([...(field.value ?? []), service.id]);
+                                        } else {
+                                          field.onChange(field.value?.filter((v: string) => v !== service.id));
+                                        }
+                                      }}
+                                    />
+                                  </FormControl>
                                   <FormLabel className="flex items-center">
                                     <service.icon className="h-4 w-4 mr-2" />
                                     {service.label}
                                   </FormLabel>
-                                  <FormDescription>
-                                    Select to add {service.label.toLowerCase()} services
-                                  </FormDescription>
                                 </div>
+                                <FormDescription>
+                                  Select to add {service.label.toLowerCase()} services
+                                </FormDescription>
+                                {checked && (
+                                  <ServiceVendorSelect
+                                    serviceId={service.id}
+                                    selectedVendors={serviceVendors[service.id] || []}
+                                    setSelectedVendors={(vendorIds) => setServiceVendors(s => ({ ...s, [service.id]: vendorIds }))}
+                                  />
+                                )}
                               </FormItem>
                             );
                           }}
@@ -276,7 +267,6 @@ const NewEventDialog = () => {
                     </div>
                   </div>
                 </TabsContent>
-
                 <div className="flex justify-end gap-2 pt-4 border-t">
                   <Button 
                     type="button" 
