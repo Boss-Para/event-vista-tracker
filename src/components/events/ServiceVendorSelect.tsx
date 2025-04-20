@@ -40,23 +40,27 @@ interface ServiceVendorSelectProps {
   serviceId: string;
   selectedVendors: string[];
   setSelectedVendors: (vendorIds: string[]) => void;
+  open: boolean;
+  onToggleOpen: () => void;
 }
 
+// Improve the UI: cleaner spacing, accordion-like open/close behavior, better card layout.
 const ServiceVendorSelect: React.FC<ServiceVendorSelectProps> = ({
   serviceId,
   selectedVendors,
   setSelectedVendors,
+  open,
+  onToggleOpen
 }) => {
   const vendors = mockVendors[serviceId] || [];
 
-  // Select two least expensive vendors by default if nothing selected
   React.useEffect(() => {
-    if (!selectedVendors.length && vendors.length > 0) {
+    if (open && !selectedVendors.length && vendors.length > 0) {
       const sorted = [...vendors].sort((a, b) => a.priceMin - b.priceMin);
       setSelectedVendors(sorted.slice(0, 2).map(v => v.id));
     }
     // eslint-disable-next-line
-  }, [vendors, selectedVendors.length]);
+  }, [vendors, open, selectedVendors.length]);
 
   const handleToggle = (id: string) => {
     if (selectedVendors.includes(id)) {
@@ -67,58 +71,69 @@ const ServiceVendorSelect: React.FC<ServiceVendorSelectProps> = ({
   };
 
   return (
-    <div className="mt-4">
-      <div className="font-semibold mb-2 text-lg">Select Vendors</div>
-      <div className="flex flex-col space-y-4">
-        {vendors.map(vendor => (
-          <div
-            key={vendor.id}
-            className={cn(
-              "border rounded-lg p-4",
-              selectedVendors.includes(vendor.id) && "border-blue-500 bg-blue-50"
-            )}
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Vendor name and rating */}
-              <div className="flex items-center gap-3">
-                <Checkbox
-                  checked={selectedVendors.includes(vendor.id)}
-                  onCheckedChange={() => handleToggle(vendor.id)}
-                  className="flex-shrink-0"
-                />
-                <div className="font-medium truncate">{vendor.name}</div>
-                <Badge className="ml-auto flex items-center gap-1 bg-green-200 text-green-800 flex-shrink-0">
-                  <Star className="h-4 w-4 text-green-600" />
-                  {vendor.rating.toFixed(1)}
-                </Badge>
-              </div>
-              
-              {/* Proof of work */}
-              <div className="flex items-center gap-3 justify-start sm:justify-center">
-                <div className="flex items-center gap-2">
-                  <Image className="h-6 w-6 text-blue-500 flex-shrink-0" />
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">Proof</span>
+    <div className="mt-2">
+      <button
+        type="button"
+        className={cn(
+          "w-full font-semibold mb-2 text-lg flex justify-between items-center px-2 py-1 hover:bg-accent rounded transition border-none bg-transparent",
+          open && "bg-blue-100"
+        )}
+        onClick={onToggleOpen}
+        aria-expanded={open}
+      >
+        <span>Select Vendors</span>
+        <span className="ml-2 text-blue-600">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div className="flex flex-col space-y-4 px-0 sm:px-2 pb-2">
+          {vendors.map(vendor => (
+            <div
+              key={vendor.id}
+              className={cn(
+                "border rounded-lg p-4 bg-white shadow-sm transition-colors",
+                selectedVendors.includes(vendor.id) && "border-blue-500 bg-blue-50"
+              )}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Vendor name and rating */}
+                <div className="flex items-center gap-3">
+                  <Checkbox
+                    checked={selectedVendors.includes(vendor.id)}
+                    onCheckedChange={() => handleToggle(vendor.id)}
+                  />
+                  <div className="font-medium truncate">{vendor.name}</div>
+                  <Badge className="ml-auto flex items-center gap-1 bg-green-200 text-green-800">
+                    <Star className="h-4 w-4 text-green-600" />
+                    {vendor.rating.toFixed(1)}
+                  </Badge>
                 </div>
-                <img
-                  src={vendor.proofImg}
-                  alt="Proof of work"
-                  className="h-14 w-14 object-cover rounded"
-                />
-              </div>
-              
-              {/* Price range */}
-              <div className="flex flex-col sm:items-end gap-1">
-                <div className="text-sm text-blue-700 font-bold">
-                  ₹{vendor.priceMin.toLocaleString()} - ₹{vendor.priceMax.toLocaleString()}
+                {/* Proof of work */}
+                <div className="flex items-center gap-3 justify-start sm:justify-center">
+                  <div className="flex items-center gap-2">
+                    <Image className="h-6 w-6 text-blue-500" />
+                    <span className="text-xs text-muted-foreground">Proof</span>
+                  </div>
+                  <img
+                    src={vendor.proofImg}
+                    alt="Proof of work"
+                    className="h-14 w-14 object-cover rounded ml-1"
+                  />
                 </div>
-                <div className="text-xs text-gray-500">Estimated Price Range</div>
+                {/* Price range */}
+                <div className="flex flex-col sm:items-end gap-1">
+                  <div className="text-sm text-blue-700 font-bold">
+                    ₹{vendor.priceMin.toLocaleString()} - ₹{vendor.priceMax.toLocaleString()}
+                  </div>
+                  <div className="text-xs text-gray-500">Estimated Price Range</div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default ServiceVendorSelect;
+
