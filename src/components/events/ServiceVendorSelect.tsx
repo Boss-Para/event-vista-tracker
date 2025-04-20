@@ -68,37 +68,37 @@ const ServiceVendorSelect: React.FC<ServiceVendorSelectProps> = ({
 
   return (
     <div className="mt-4">
-      <div className="font-semibold mb-1">Select Vendors</div>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="font-semibold mb-2 text-lg">Select Vendors</div>
+      <div className="flex flex-col space-y-4">
         {vendors.map(vendor => (
           <div
             key={vendor.id}
             className={cn(
-              "flex flex-col sm:flex-row items-center gap-2 border rounded-lg p-4",
+              "flex flex-col sm:flex-row items-center gap-4 border rounded-lg p-4",
               selectedVendors.includes(vendor.id) && "border-blue-500 bg-blue-50"
             )}
           >
-            <div className="flex items-center gap-2 w-full sm:w-1/3">
+            <div className="flex items-center gap-3 w-full sm:w-1/3 min-w-[220px]">
               <Checkbox
                 checked={selectedVendors.includes(vendor.id)}
                 onCheckedChange={() => handleToggle(vendor.id)}
               />
-              <span className="font-medium">{vendor.name}</span>
+              <div className="font-medium">{vendor.name}</div>
               <Badge className="ml-2 flex items-center gap-1 bg-green-200 text-green-800">
-                <Star className="h-3 w-3 text-green-600" />
-                {vendor.rating}
+                <Star className="h-4 w-4 text-green-600" />
+                {vendor.rating.toFixed(1)}
               </Badge>
             </div>
-            <div className="flex items-center gap-2 w-full sm:w-1/3">
-              <Image className="h-8 w-8 text-blue-500" />
-              <span className="text-xs text-muted-foregound">Proof</span>
+            <div className="flex items-center gap-3 w-full sm:w-1/3">
+              <Image className="h-8 w-8 text-blue-500 flex-shrink-0" />
+              <span className="text-xs text-muted-foreground whitespace-nowrap">Proof</span>
               <img
                 src={vendor.proofImg}
                 alt="Proof of work"
-                className="h-12 w-12 object-cover ml-1 rounded"
+                className="h-14 w-14 object-cover rounded ml-1"
               />
             </div>
-            <div className="w-full sm:w-1/3 flex flex-col sm:items-end">
+            <div className="flex flex-col sm:items-end gap-1 w-full sm:w-1/3 min-w-[140px]">
               <div className="text-sm text-blue-700 font-bold">
                 ₹{vendor.priceMin.toLocaleString()} - ₹{vendor.priceMax.toLocaleString()}
               </div>
@@ -112,3 +112,4 @@ const ServiceVendorSelect: React.FC<ServiceVendorSelectProps> = ({
 };
 
 export default ServiceVendorSelect;
+
