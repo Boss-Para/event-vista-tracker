@@ -6,7 +6,7 @@ import { Star, Image } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Mock vendor data (you can replace with real data later)
-const mockVendors: Record<string, Array<{
+export const mockVendors: Record<string, Array<{
   id: string;
   name: string;
   rating: number;
@@ -33,6 +33,32 @@ const mockVendors: Record<string, Array<{
     { id: "v10", name: "GlamMakers", rating: 4.7, priceMin: 14000, priceMax: 19000, proofImg: "/placeholder.svg" },
     { id: "v11", name: "Powder Room", rating: 4.4, priceMin: 12000, priceMax: 17000, proofImg: "/placeholder.svg" },
     { id: "v12", name: "Chic Artistry", rating: 4.2, priceMin: 12500, priceMax: 16000, proofImg: "/placeholder.svg" },
+  ],
+  // Adding vendors for other services
+  cake: [
+    { id: "v13", name: "Sweet Delights", rating: 4.6, priceMin: 8000, priceMax: 15000, proofImg: "/placeholder.svg" },
+    { id: "v14", name: "Cake Masters", rating: 4.7, priceMin: 10000, priceMax: 18000, proofImg: "/placeholder.svg" },
+    { id: "v15", name: "Royal Bakery", rating: 4.3, priceMin: 7000, priceMax: 12000, proofImg: "/placeholder.svg" },
+  ],
+  sound: [
+    { id: "v16", name: "Audio Masters", rating: 4.5, priceMin: 25000, priceMax: 40000, proofImg: "/placeholder.svg" },
+    { id: "v17", name: "Sound Wave", rating: 4.2, priceMin: 20000, priceMax: 35000, proofImg: "/placeholder.svg" },
+    { id: "v18", name: "Rhythm Express", rating: 4.8, priceMin: 30000, priceMax: 45000, proofImg: "/placeholder.svg" },
+  ],
+  decor: [
+    { id: "v19", name: "Decor Dreams", rating: 4.7, priceMin: 45000, priceMax: 80000, proofImg: "/placeholder.svg" },
+    { id: "v20", name: "Elegant Arrangements", rating: 4.9, priceMin: 55000, priceMax: 90000, proofImg: "/placeholder.svg" },
+    { id: "v21", name: "Theme Crafters", rating: 4.5, priceMin: 35000, priceMax: 65000, proofImg: "/placeholder.svg" },
+  ],
+  catering: [
+    { id: "v22", name: "Royal Feast", rating: 4.8, priceMin: 60000, priceMax: 120000, proofImg: "/placeholder.svg" },
+    { id: "v23", name: "Taste Buds", rating: 4.6, priceMin: 50000, priceMax: 100000, proofImg: "/placeholder.svg" },
+    { id: "v24", name: "Delicious Delights", rating: 4.4, priceMin: 45000, priceMax: 90000, proofImg: "/placeholder.svg" },
+  ],
+  transport: [
+    { id: "v25", name: "Premier Cars", rating: 4.7, priceMin: 15000, priceMax: 30000, proofImg: "/placeholder.svg" },
+    { id: "v26", name: "Luxury Rides", rating: 4.9, priceMin: 18000, priceMax: 35000, proofImg: "/placeholder.svg" },
+    { id: "v27", name: "Travel Express", rating: 4.5, priceMin: 12000, priceMax: 25000, proofImg: "/placeholder.svg" },
   ],
 };
 

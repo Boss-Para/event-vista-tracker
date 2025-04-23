@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import ServiceVendorSelect from "./ServiceVendorSelect";
+import ServiceVendorSelect, { mockVendors } from "./ServiceVendorSelect";
 
 // Event type options
 const eventTypes = [
