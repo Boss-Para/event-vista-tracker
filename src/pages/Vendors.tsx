@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import VendorCard from "@/components/vendors/VendorCard";
@@ -12,8 +11,8 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import AddVendorDialog from "@/components/vendors/AddVendorDialog";
 
-// Mock data for vendors with availability dates
 const mockVendors = [
   {
     id: "1",
@@ -104,7 +103,6 @@ const Vendors = () => {
     
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(vendor.type);
     
-    // Fix: Check if availableDates exists before calling .some()
     const matchesDate = !selectedDate || 
       (vendor.availableDates && 
        vendor.availableDates.some(date => 
@@ -156,10 +154,7 @@ const Vendors = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add Vendor
-          </Button>
+          <AddVendorDialog />
         </div>
       </div>
 

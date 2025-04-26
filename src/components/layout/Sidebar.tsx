@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -22,7 +21,6 @@ const navItems = [
   { name: "Events", href: "/events", icon: Calendar },
   { name: "Gallery", href: "/gallery", icon: Image },
   { name: "Reports", href: "/reports", icon: LineChart },
-  { name: "Client Events", href: "/client", icon: Users },
   { name: "Chat", href: "/chat", icon: MessageCircle },
 ];
 
